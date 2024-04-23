@@ -33,8 +33,8 @@ const checkWinner = () => {
   // Check Rows
   for (let i = 0; i < 3; ++i) {
     const row = board[i];
-    if (row.every((val) => val == row[0])) {
-      if (row[0].mark !== '') return row[0].mark;
+    if (row.every((val) => val.mark === row[0].mark && row[0].mark !== '')) {
+      return row[0].mark;
     }
   }
 
@@ -45,28 +45,22 @@ const checkWinner = () => {
       col.push(board[i][j]);
     }
 
-    if (col.every((val) => val == col[0])) {
-      if (col[0].mark !== '') return col[0].mark;
+    if (col.every((val) => val.mark === col[0].mark && col[0].mark !== '')) {
+      return col[0].mark;
     }
   }
 
   // Check If Filled
-  let checkEmpty = false;
   for (let i = 0; i < 3; ++i) {
     for (let j = 0; j < 3; ++j) {
       if (board[i][j].mark === '') {
-        checkEmpty = true;
-        break;
+        return '';
       }
     }
   }
 
   // Tie
-  if (!checkEmpty) {
-    return 'T';
-  }
-
-  return '';
+  return 'T';
 };
 
 const Controller = (() => {
