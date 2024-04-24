@@ -1,5 +1,5 @@
 const GameBoard = (() => {
-  const board = [];
+  let board = [];
 
   const getBoard = () => {
     return board;
@@ -28,10 +28,15 @@ const GameBoard = (() => {
     return true;
   };
 
+  const resetBoard = () => {
+    board = [];
+  };
+
   return {
     getBoard,
     init,
     newMarker,
+    resetBoard,
   };
 })();
 
@@ -137,7 +142,7 @@ const Controller = (() => {
     };
 
     const aiMove = () => {
-      setTimeout(() => {}, 1000);
+      console.log('hello');
       if (!playerClicked) return;
       let randNum = Math.floor(Math.random() * 9);
       let row = Math.floor(randNum / 3);
@@ -165,10 +170,19 @@ const Controller = (() => {
         winModal.classList.add('show');
 
         const restartBtn = document.querySelector('#restart-btn');
+
         restartBtn.addEventListener('click', () => {
           winModal.classList.remove('show');
+          const hoverEle = document.querySelectorAll('.hover-content');
+          hoverEle.forEach((ele) => {
+            ele.classList.remove('show', 'x', 'o');
+            ele.textContent = 'X';
+          });
         });
 
+        GameBoard.resetBoard();
+        GameBoard.init();
+        playerClicked = false;
         return;
       }
 
