@@ -61,3 +61,11 @@
 .cell.o {
   cursor: not-allowed;
 }
+
+/* .board.x {
+} */
+
+.cell:hover:not(.x):not(.o) {
+  background-color: aqua;
+  color: lightgrey;
+}
