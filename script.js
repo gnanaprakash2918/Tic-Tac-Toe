@@ -44,6 +44,7 @@ const GameBoard = (() => {
 GameBoard.init();
 
 const checkWinner = () => {
+  console.log('check');
   const board = GameBoard.getBoard();
 
   // Check Rows
@@ -182,7 +183,22 @@ const Controller = (() => {
 
         GameBoard.resetBoard();
         GameBoard.init();
+
+        cells.forEach((cell, idx) => {
+          cell.removeEventListener('click', () => {
+            playerMove(idx);
+          });
+        });
+
+        // Re-add event listeners to cells
+        cells.forEach((cell, idx) => {
+          cell.addEventListener('click', () => {
+            playerMove(idx);
+          });
+        });
+
         playerClicked = false;
+        gameLoop();
         return;
       }
 
