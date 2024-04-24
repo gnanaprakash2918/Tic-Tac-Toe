@@ -129,7 +129,9 @@ const Controller = (() => {
       cells.forEach((cell, idx) => {
         if (!(cell.classList.contains('x') || cell.classList.contains('o'))) {
           cell.addEventListener('click', () => {
-            GameBoard.newMarker(cell, currPlayer.marker, 0, 0);
+            var row = Math.floor(idx / 3);
+            var col = idx % 3;
+            GameBoard.newMarker(cell, currPlayer.marker, row, col);
           });
         }
       });

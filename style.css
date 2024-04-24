@@ -68,12 +68,12 @@
   display: block;
 }
 
-.cell.x,
-.cell.o {
+.hover-content.x,
+.hover-content.o {
   cursor: not-allowed;
 }
 
-.cell:hover .hover-content {
+.cell:hover .hover-content:not(.o):not(.x) {
   color: black;
   display: block;
   font-size: larger;
