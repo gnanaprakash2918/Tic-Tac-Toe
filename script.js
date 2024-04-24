@@ -77,12 +77,12 @@ const checkWinner = () => {
 
   diag = [];
   i = 2;
-  j = 2;
+  j = 0;
 
-  while (i >= 0 && j >= 0) {
+  while (i >= 0 && j < 3) {
     diag.push(board[i][j]);
     --i;
-    --j;
+    ++j;
   }
 
   if (diag.every((val) => val.mark === diag[0].mark && diag[0].mark !== '')) {
@@ -137,8 +137,7 @@ const Controller = (() => {
     };
 
     const aiMove = () => {
-      // setTimeout(() => {}, 1000);
-
+      setTimeout(() => {}, 1000);
       if (!playerClicked) return;
       let randNum = Math.floor(Math.random() * 9);
       let row = Math.floor(randNum / 3);
