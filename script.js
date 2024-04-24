@@ -61,6 +61,34 @@ const checkWinner = () => {
     }
   }
 
+  // Check Diagonal
+  let i = 0,
+    j = 0;
+  const diag = [];
+  while (i < 3 && j < 3) {
+    diag.push(board[i][j]);
+    ++i;
+    ++j;
+  }
+
+  if (diag.every((val) => val.mark === diag[0].mark && diag[0].mark !== '')) {
+    return diag[0].mark;
+  }
+
+  diag = [];
+  i = 2;
+  j = 2;
+
+  while (i >= 0 && j >= 0) {
+    diag.push(board[i][j]);
+    --i;
+    --j;
+  }
+
+  if (diag.every((val) => val.mark === diag[0].mark && diag[0].mark !== '')) {
+    return diag[0].mark;
+  }
+
   // Check If Filled
   for (let i = 0; i < 3; ++i) {
     for (let j = 0; j < 3; ++j) {
@@ -109,6 +137,8 @@ const Controller = (() => {
     };
 
     const aiMove = () => {
+      setTimeout(() => {}, 1000);
+
       if (!playerClicked) return;
       let randNum = Math.floor(Math.random() * 9);
       let row = Math.floor(randNum / 3);
