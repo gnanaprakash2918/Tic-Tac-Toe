@@ -61,10 +61,10 @@ const checkWinner = () => {
     }
   }
 
-  // Check Diagonal
+  // // Check Diagonal
   let i = 0,
     j = 0;
-  const diag = [];
+  let diag = [];
   while (i < 3 && j < 3) {
     diag.push(board[i][j]);
     ++i;
@@ -137,7 +137,7 @@ const Controller = (() => {
     };
 
     const aiMove = () => {
-      setTimeout(() => {}, 1000);
+      // setTimeout(() => {}, 1000);
 
       if (!playerClicked) return;
       let randNum = Math.floor(Math.random() * 9);
