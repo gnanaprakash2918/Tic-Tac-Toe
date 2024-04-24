@@ -16,9 +16,15 @@ const GameBoard = (() => {
     }
   };
 
-  const newMarker = (mark, row, col) => {
+  const newMarker = (cell, mark, row, col) => {
     if (board[row][col].mark !== '') return false;
     board[row][col] = { mark };
+
+    const hoverOverlay = cell.querySelector('.hover-content');
+    hoverOverlay.textContent = mark;
+    hoverOverlay.classList.add(`show`);
+    hoverOverlay.classList.add(`${mark.toLowerCase()}`);
+
     return true;
   };
 
@@ -118,6 +124,15 @@ const Controller = (() => {
 
         return;
       }
+
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach((cell, idx) => {
+        if (!(cell.classList.contains('x') || cell.classList.contains('o'))) {
+          cell.addEventListener('click', () => {
+            GameBoard.newMarker(cell, currPlayer.marker, 0, 0);
+          });
+        }
+      });
 
       // GameBoard.newMarker(
       //   currPlayer.marker,
