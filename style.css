@@ -15,11 +15,32 @@
   grid-template-columns: repeat(3, auto);
   justify-content: center;
   align-content: center;
+  justify-items: center;
+  align-items: center;
 }
 
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  background-color: black;
-  border: 1px solid white;
+  border: 1px solid black;
+}
+
+.cell:nth-child(2),
+.cell:nth-child(3),
+.cell:first-child {
+  border-top: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:last-child {
+  border-bottom: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
 }
