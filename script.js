@@ -6,7 +6,9 @@ const GameBoard = (() => {
   };
 
   const newMarker = (mark, row, col) => {
+    if (board[row][col].mark !== '') return false;
     board[row][col] = { mark };
+    return true;
   };
 
   const init = () => {
@@ -20,12 +22,22 @@ const GameBoard = (() => {
     }
   };
 
+  const printBoard = () => {
+    for (let i = 0; i < 3; ++i) {
+      console.log(JSON.stringify(board[i]));
+      console.log();
+    }
+  };
+
   return {
     getBoard,
     init,
     newMarker,
+    printBoard,
   };
 })();
+
+GameBoard.init();
 
 const checkWinner = () => {
   const board = GameBoard.getBoard();
@@ -74,6 +86,47 @@ const Controller = (() => {
     marker: 'O',
   };
 
-  let playerOneTurn = true;
-  const init = () => {};
+  const startGame = () => {
+    let currPlayer = playerOne;
+
+    while (1) {
+      GameBoard.printBoard();
+      let curr = checkWinner();
+      if (curr !== '') {
+        if (curr === 'T') console.log(`Its a Tie !`);
+        else console.log(`Winner is ${currPlayer.name}`);
+        return;
+      }
+
+      GameBoard.newMarker(
+        currPlayer.marker,
+        parseInt(prompt('enter row')),
+        parseInt(prompt('enter col'))
+      );
+
+      // AI
+      let r = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+      let c = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+      let aiPlay = GameBoard.newMarker(
+        currPlayer.marker === 'X' ? 'O' : 'X',
+        r,
+        c
+      );
+
+      while (!aiPlay) {
+        aiPlay = GameBoard.newMarker(
+          currPlayer.marker === 'X' ? 'O' : 'X',
+          r,
+          c
+        );
+        r = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+        c = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+      }
+      console.clear();
+    }
+  };
+
+  return { startGame };
 })();
+
+Controller.startGame();
