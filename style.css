@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
+  font-family: 'Outfit', sans-serif;
 }
 
 :root {
@@ -43,4 +46,18 @@
 
 .cell:nth-child(3n + 3) {
   border-right: none;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(var(--cell-size) * 0.9);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cell.x,
+.cell.o {
+  cursor: not-allowed;
 }
