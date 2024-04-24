@@ -5,12 +5,6 @@ const GameBoard = (() => {
     return board;
   };
 
-  const newMarker = (mark, row, col) => {
-    if (board[row][col].mark !== '') return false;
-    board[row][col] = { mark };
-    return true;
-  };
-
   const init = () => {
     for (let i = 1; i <= 3; ++i) {
       const row = [];
@@ -20,6 +14,12 @@ const GameBoard = (() => {
 
       board.push(row);
     }
+  };
+
+  const newMarker = (mark, row, col) => {
+    if (board[row][col].mark !== '') return false;
+    board[row][col] = { mark };
+    return true;
   };
 
   const printBoard = () => {
@@ -37,6 +37,7 @@ const GameBoard = (() => {
   };
 })();
 
+// Initialize the board
 GameBoard.init();
 
 const checkWinner = () => {
@@ -93,8 +94,19 @@ const Controller = (() => {
       GameBoard.printBoard();
       let curr = checkWinner();
       if (curr !== '') {
-        if (curr === 'T') console.log(`Its a Tie !`);
-        else console.log(`Winner is ${currPlayer.name}`);
+        let winnerContent = `${currPlayer.marker} Wins`;
+        if (curr === 'T') winnerContent = `Its a Tie !`;
+
+        const winMsg = document.querySelector('[data-winning-msg-text]');
+        winMsg.textContent = winnerContent;
+        const winModal = document.querySelector('.winning-msg');
+        winModal.classList.add('show');
+
+        const restartBtn = document.querySelector('#restart-btn');
+        restartBtn.addEventListener('click', () => {
+          winModal.classList.remove('show');
+        });
+
         return;
       }
 
@@ -105,8 +117,8 @@ const Controller = (() => {
       );
 
       // AI
-      let r = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
-      let c = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+      let r = Math.floor(Math.random() * 3);
+      let c = Math.floor(Math.random() * 3);
       let aiPlay = GameBoard.newMarker(
         currPlayer.marker === 'X' ? 'O' : 'X',
         r,
@@ -119,8 +131,8 @@ const Controller = (() => {
           r,
           c
         );
-        r = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
-        c = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+        c = Math.floor(Math.random() * 3);
+        r = Math.floor(Math.random() * 3);
       }
       console.clear();
     }
@@ -129,4 +141,4 @@ const Controller = (() => {
   return { startGame };
 })();
 
-// Controller.startGame();
+Controller.startGame();
