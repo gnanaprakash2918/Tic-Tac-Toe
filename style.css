@@ -65,7 +65,13 @@
 /* .board.x {
 } */
 
-.cell:hover:not(.x):not(.o) {
-  background-color: aqua;
-  color: lightgrey;
+.hover-content {
+  display: none;
+}
+
+.cell:hover .hover-content {
+  color: black;
+  display: block;
+  font-size: larger;
+  opacity: 0.3;
 }
