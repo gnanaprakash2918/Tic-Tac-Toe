@@ -28,18 +28,10 @@ const GameBoard = (() => {
     return true;
   };
 
-  const printBoard = () => {
-    for (let i = 0; i < 3; ++i) {
-      console.log(JSON.stringify(board[i]));
-      console.log();
-    }
-  };
-
   return {
     getBoard,
     init,
     newMarker,
-    printBoard,
   };
 })();
 
@@ -93,23 +85,49 @@ const Controller = (() => {
     marker: 'O',
   };
 
+  let playerClicked = false;
+
   const startGame = () => {
-    let currPlayer = playerOne;
-
-    let value = 'X';
-    if (document.querySelector('.board').classList.contains('o')) {
-      value = 'O';
-    }
-
     const hoverElements = document.querySelectorAll('.hover-content');
-    hoverElements.forEach((ele) => (ele.textContent = value));
+    hoverElements.forEach((ele) => (ele.textContent = 'X'));
 
-    while (1) {
-      GameBoard.printBoard();
+    const cells = document.querySelectorAll('.cell');
+
+    const playerMove = (idx) => {
+      if (
+        cells[idx].querySelector('.hover-content').classList.contains('x') ||
+        cells[idx].querySelector('.hover-content').classList.contains('o')
+      ) {
+        return;
+      }
+
+      let row = Math.floor(idx / 3);
+      let col = idx % 3;
+      GameBoard.newMarker(cells[idx], 'X', row, col);
+
+      playerClicked = true;
+    };
+
+    const aiMove = () => {
+      if (!playerClicked) return;
+      let randNum = Math.floor(Math.random() * 9);
+      let row = Math.floor(randNum / 3);
+      let col = randNum % 3;
+
+      while (!GameBoard.newMarker(cells[randNum], 'O', row, col)) {
+        randNum = Math.floor(Math.random() * 9);
+        row = Math.floor(randNum / 3);
+        col = randNum % 3;
+      }
+
+      playerClicked = false;
+    };
+
+    const gameLoop = () => {
       let curr = checkWinner();
 
       if (curr !== '') {
-        let winnerContent = `${currPlayer.marker} Wins`;
+        let winnerContent = `${curr} Wins`;
         if (curr === 'T') winnerContent = `Its a Tie !`;
 
         const winMsg = document.querySelector('[data-winning-msg-text]');
@@ -125,44 +143,20 @@ const Controller = (() => {
         return;
       }
 
-      const cells = document.querySelectorAll('.cell');
-      cells.forEach((cell, idx) => {
-        if (!(cell.classList.contains('x') || cell.classList.contains('o'))) {
-          cell.addEventListener('click', () => {
-            var row = Math.floor(idx / 3);
-            var col = idx % 3;
-            GameBoard.newMarker(cell, currPlayer.marker, row, col);
-          });
-        }
+      if (playerClicked) {
+        aiMove();
+      }
+
+      setTimeout(gameLoop, 200);
+    };
+
+    cells.forEach((cell, idx) => {
+      cell.addEventListener('click', () => {
+        playerMove(idx);
       });
+    });
 
-      // GameBoard.newMarker(
-      //   currPlayer.marker,
-      //   parseInt(prompt('enter row')),
-      //   parseInt(prompt('enter col'))
-      // );
-
-      // // AI
-      // let r = Math.floor(Math.random() * 3);
-      // let c = Math.floor(Math.random() * 3);
-      // let aiPlay = GameBoard.newMarker(
-      //   currPlayer.marker === 'X' ? 'O' : 'X',
-      //   r,
-      //   c
-      // );
-
-      // while (!aiPlay) {
-      //   aiPlay = GameBoard.newMarker(
-      //     currPlayer.marker === 'X' ? 'O' : 'X',
-      //     r,
-      //     c
-      //   );
-      //   c = Math.floor(Math.random() * 3);
-      //   r = Math.floor(Math.random() * 3);
-      // }
-      console.clear();
-      break;
-    }
+    gameLoop();
   };
 
   return { startGame };
