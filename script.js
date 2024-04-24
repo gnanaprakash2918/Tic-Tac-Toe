@@ -90,9 +90,18 @@ const Controller = (() => {
   const startGame = () => {
     let currPlayer = playerOne;
 
+    let value = 'X';
+    if (document.querySelector('.board').classList.contains('o')) {
+      value = 'O';
+    }
+
+    const hoverElements = document.querySelectorAll('.hover-content');
+    hoverElements.forEach((ele) => (ele.textContent = value));
+
     while (1) {
       GameBoard.printBoard();
       let curr = checkWinner();
+
       if (curr !== '') {
         let winnerContent = `${currPlayer.marker} Wins`;
         if (curr === 'T') winnerContent = `Its a Tie !`;
@@ -110,31 +119,32 @@ const Controller = (() => {
         return;
       }
 
-      GameBoard.newMarker(
-        currPlayer.marker,
-        parseInt(prompt('enter row')),
-        parseInt(prompt('enter col'))
-      );
+      // GameBoard.newMarker(
+      //   currPlayer.marker,
+      //   parseInt(prompt('enter row')),
+      //   parseInt(prompt('enter col'))
+      // );
 
-      // AI
-      let r = Math.floor(Math.random() * 3);
-      let c = Math.floor(Math.random() * 3);
-      let aiPlay = GameBoard.newMarker(
-        currPlayer.marker === 'X' ? 'O' : 'X',
-        r,
-        c
-      );
+      // // AI
+      // let r = Math.floor(Math.random() * 3);
+      // let c = Math.floor(Math.random() * 3);
+      // let aiPlay = GameBoard.newMarker(
+      //   currPlayer.marker === 'X' ? 'O' : 'X',
+      //   r,
+      //   c
+      // );
 
-      while (!aiPlay) {
-        aiPlay = GameBoard.newMarker(
-          currPlayer.marker === 'X' ? 'O' : 'X',
-          r,
-          c
-        );
-        c = Math.floor(Math.random() * 3);
-        r = Math.floor(Math.random() * 3);
-      }
+      // while (!aiPlay) {
+      //   aiPlay = GameBoard.newMarker(
+      //     currPlayer.marker === 'X' ? 'O' : 'X',
+      //     r,
+      //     c
+      //   );
+      //   c = Math.floor(Math.random() * 3);
+      //   r = Math.floor(Math.random() * 3);
+      // }
       console.clear();
+      break;
     }
   };
 
