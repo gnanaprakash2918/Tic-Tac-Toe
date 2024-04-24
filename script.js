@@ -129,4 +129,4 @@ const Controller = (() => {
   return { startGame };
 })();
 
-Controller.startGame();
+// Controller.startGame();
